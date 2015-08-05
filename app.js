@@ -1,5 +1,19 @@
 var express = require('express');
 var app = express(); // creates an instance of an express application
+var swig = require('swig');
+
+var people = {title: 'An Example', people: [{name: 'Gandalf'}, {name: 'Frodo'}, {name: 'Hermione'}]};
+
+swig.renderFile(__dirname + '/views/index.html', people, function (error, output){
+	if (error) throw error;
+	console.log(output);
+})
+
+app.engine('swig', swig.renderFile);
+
+app.set('view engine', 'html');
+
+app.set('views', __dirname + '/views');
 
 app.use(function (request, response, next) {
     // do your logging here
