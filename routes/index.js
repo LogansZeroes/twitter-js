@@ -3,37 +3,24 @@ var tweetBank = require('../tweetBank');
 
 router.get('/', function(req, res){
 	var tweets = tweetBank.list();
-
 	res.render('index', {title: 'Twitter.js', tweets: tweets});
-
 });
 
-// router.get('/stylesheets/style.css', function(req, res, next){
-	
-// 	var path = req.path;
-// 	console.log("path: " + path);
-// 	//var fileName = __dirname + "/stylesheets/" + req.params.name;
-// 	var fileName = "/public" + path;
-// 	if (fileName) {
-// 		res.sendFile(path);
-		
-// 	}
-// 	else{
-// 		next();
-// 	}
-// 	//console.log(fileName);
-// 	// res.sendFile(fileName, function (err) {
-// 	//     if (err) {
-// 	//       console.log(err);
-// 	//       res.status(err.status).end();
-// 	//     }
-// 	//     else {
-// 	//       console.log('Sent:', fileName);
-// 	//     }
-//  //  	});
-// });
+// say that a client GET requests the path /users/nimit
+router.get('/users/:name', function(req, res) {
+  var name = req.params.name;
+  var list = tweetBank.find( {name: name} );
+  res.render( 'index', {title: 'Twitter.js - Posts by '+ name, tweets: list });
+});
 
-//path.resolve
 
+router.get('/users/:name/tweets/:id', function(req,res){
+	console.log(req.params);
+	var name = req.params.name;
+	var tweet = tweetBank.find({name: name, id: req.params.id});
+	console.log(tweet[0]);
+	console.log("name: " + name + ", ID: " + req.params.id + ", tweet: " + tweet);
+	res.render('index', {title: 'Twitter.js - Post ID #' + req.params.id, tweets: tweet});
+});
 
 module.exports = router;
