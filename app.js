@@ -1,6 +1,7 @@
 var express = require('express');
 var swig = require('swig');
 var morgan = require('morgan');
+var tweetBank = require('./tweetBank');
 var app = express();
 
 swig.setDefaults({ cache: false });
@@ -10,7 +11,6 @@ app.engine('html', swig.renderFile);
 app.set('view engine', 'html');
 
 app.set('views', './views');
-
 
 app.get("/",function(request, response){
 
