@@ -3,10 +3,18 @@ var swig = require('swig');
 var morgan = require('morgan');
 var tweetBank = require('./tweetBank');
 var routes = require('./routes/');
-
+var bodyParser = require('body-parser');
+var socketio = require('socket.io');
 var app = express();
+var server = app.listen(3000);
+var io = socketio.listen(server);
 
-app.use('/', routes);
+
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+app.use('/', routes(io));
 app.engine('html', swig.renderFile);
 app.set('view engine', 'html');
 app.set('views', './views');
@@ -26,10 +34,10 @@ app.use(express.static(__dirname + '/public'));
 
 
 
-app.listen(3000, function(){
-	console.log("Server listening");
-	console.log(200);
-});
+// app.listen(3000, function(){
+// 	console.log("Server listening");
+// 	console.log(200);
+// });
 
 
 
